@@ -26,17 +26,9 @@ JNIEXPORT jint JNICALL Java_IRCClient_connect
 /*
  * Class:     IRCClient
  * Method:    disconnect
- * Signature: ()I
+ * Signature: ()V
  */
-JNIEXPORT jint JNICALL Java_IRCClient_disconnect
-  (JNIEnv *, jobject);
-
-/*
- * Class:     IRCClient
- * Method:    isConnected
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_IRCClient_isConnected
+JNIEXPORT void JNICALL Java_IRCClient_disconnect
   (JNIEnv *, jobject);
 
 /*
@@ -50,10 +42,10 @@ JNIEXPORT jint JNICALL Java_IRCClient_join
 /*
  * Class:     IRCClient
  * Method:    message
- * Signature: (Ljava/lang/String;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)I
  */
 JNIEXPORT jint JNICALL Java_IRCClient_message
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jstring);
 
 #ifdef __cplusplus
 }

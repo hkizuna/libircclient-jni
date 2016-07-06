@@ -17,8 +17,7 @@ public class IRCClient {
   
   // connection
   public native int connect(String server, int port, String password, String nickname, String username, String realname); 
-  public native int disconnect();
-  public native boolean isConnected();
+  public native void disconnect();
 
   // join channel
   // should be used after connect
@@ -26,7 +25,7 @@ public class IRCClient {
 
   // send message
   // should be used after connect
-  public native int message(String content);
+  public native int message(String channel, String content);
 
   // event listeners 
   public static class OnConnectListener {
@@ -34,7 +33,7 @@ public class IRCClient {
   }
 
   public static class OnChannelListener {
-    public void onChannel() {}
+    public void onChannel(String fromPerson, String toChannel, String message) {}
   }
 
   private OnConnectListener mOnConnectListener;
@@ -53,8 +52,8 @@ public class IRCClient {
     if (mOnConnectListener != null) mOnConnectListener.onConnect();
   }
 
-  public void onChannel() {
-    if (mOnChannelListener != null) mOnChannelListener.onChannel();
+  public void onChannel(String fromPerson, String toChannel, String message) {
+    if (mOnChannelListener != null) mOnChannelListener.onChannel(fromPerson, toChannel, message);
   }
 
   static {

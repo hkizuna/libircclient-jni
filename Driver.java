@@ -1,15 +1,21 @@
 public class Driver {
   public static void main(String[] args) {
     IRCClient ircClient = IRCClient.getInstance();
-    int connectRet = ircClient.connect("irc.dal.net", 6667, "", "xwang", "xwang", "xwang");
-    System.out.println(connectRet);
-    ircClient.setOnConnectListener(mOnConnectListener);
-    ircClient.onConnect();
+    ircClient.setOnConnectListener(new IRCClient.OnConnectListener() {
+      public void onConnect() {
+        ircClient.join("#hkizuna"); 
+      }
+    });
+    ircClient.setOnChannelListener(new IRCClient.OnChannelListener() {
+      public void onChannel(String fromPerson, String toChannel, String message) {
+        ircClient.message(toChannel, "replied to " + message);
+      }
+    });
+    Thread ircThread = new Thread() {
+      public void run() {
+        ircClient.connect("irc.dal.net", 6667, "", "hkizuna", "hkizuna", "hkizuna");
+      }
+    }; 
+    ircThread.start();
   }
-
-  static IRCClient.OnConnectListener mOnConnectListener = new IRCClient.OnConnectListener() {
-    public void onConnect() {
-      System.out.println("onConnect called.");
-    }
-  };
 }
