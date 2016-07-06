@@ -1,4 +1,4 @@
-TARGET=libircclient-jni.so
+TARGET=libircclient-jni.dylib
 INCLUDES=-I./libircclient/include -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
 LIBRARYS=-L./libircclient
 CFLAGS=$(INCLUDES)

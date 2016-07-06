@@ -58,6 +58,6 @@ public class IRCClient {
   }
 
   static {
-    System.loadLibrary("libircclient-jni");
+    System.loadLibrary("ircclient-jni");
   }
 }
