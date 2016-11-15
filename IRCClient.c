@@ -1,4 +1,4 @@
-#include "IRCClient.h"
+#include "xwang_cordova_irc_IRCClient.h"
 #include <libircclient.h>
 #include <string.h>
 
@@ -29,7 +29,7 @@ get_jni_env(JNIEnv **env) {
 
 jobject
 get_irc_client_instance(JNIEnv *env, jclass cls) {
-  jmethodID mid = (*env)->GetStaticMethodID(env, cls, "getInstance", "()LIRCClient;");
+  jmethodID mid = (*env)->GetStaticMethodID(env, cls, "getInstance", "()Lxwang/cordova/irc/IRCClient;");
   return (*env)->CallStaticObjectMethod(env, cls, mid);
 }
 
@@ -37,7 +37,7 @@ void
 event_connect(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count) {
   JNIEnv *env;
   get_jni_env(&env);
-  jclass cls = (*env)->FindClass(env, "IRCClient");
+  jclass cls = (*env)->FindClass(env, "xwang/cordova/irc/IRCClient");
   jobject obj = get_irc_client_instance(env, cls);
   jmethodID mid = (*env)->GetMethodID(env, cls, "onConnect", "()V");
   (*env)->CallVoidMethod(env, obj, mid);
@@ -47,7 +47,7 @@ void
 event_channel(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count) {
   JNIEnv *env;
   get_jni_env(&env);
-  jclass cls = (*env)->FindClass(env, "IRCClient");
+  jclass cls = (*env)->FindClass(env, "xwang/cordova/irc/IRCClient");
   jobject obj = get_irc_client_instance(env, cls);
   jmethodID mid = (*env)->GetMethodID(env, cls, "onChannel", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
   jstring person = get_j_string(env, origin);
@@ -57,7 +57,7 @@ event_channel(irc_session_t *session, const char *event, const char *origin, con
 }
 
 void
-Java_IRCClient_initialize(JNIEnv *env, jobject obj) {
+Java_xwang_cordova_irc_IRCClient_initialize(JNIEnv *env, jobject obj) {
   if (!session) {
     memset(&callbacks, 0, sizeof(callbacks));
 
@@ -72,7 +72,7 @@ Java_IRCClient_initialize(JNIEnv *env, jobject obj) {
 }
 
 jint
-Java_IRCClient_connect(JNIEnv *env, jobject obj, jstring server, jint port, jstring password, jstring nickname, jstring username, jstring realname) {
+Java_xwang_cordova_irc_IRCClient_connect(JNIEnv *env, jobject obj, jstring server, jint port, jstring password, jstring nickname, jstring username, jstring realname) {
   const char *cc_server = get_c_string(env, server);
   unsigned short us_port = (unsigned short) port;
   const char *cc_password = (*env)->GetStringLength(env, password) > 0 ? get_c_string(env, password) : NULL;
@@ -105,14 +105,14 @@ Java_IRCClient_connect(JNIEnv *env, jobject obj, jstring server, jint port, jstr
 }
 
 void
-Java_IRCClient_disconnect(JNIEnv *env, jobject obj) {
+Java_xwang_cordova_irc_IRCClient_disconnect(JNIEnv *env, jobject obj) {
   if (session) {
     irc_destroy_session(session);
   }
 }
 
 jint
-Java_IRCClient_join(JNIEnv *env, jobject obj, jstring channel) {
+Java_xwang_cordova_irc_IRCClient_join(JNIEnv *env, jobject obj, jstring channel) {
   const char *cc_channel = get_c_string(env, channel);
   if (irc_cmd_join(session, cc_channel, 0)) {
     free_c_string(env, channel, cc_channel);
@@ -123,7 +123,7 @@ Java_IRCClient_join(JNIEnv *env, jobject obj, jstring channel) {
 }
 
 jint
-Java_IRCClient_message(JNIEnv *env, jobject obj, jstring channel, jstring content) {
+Java_xwang_cordova_irc_IRCClient_message(JNIEnv *env, jobject obj, jstring channel, jstring content) {
   const char *cc_channel = get_c_string(env, channel);
   const char *cc_content = get_c_string(env, content);
   if (irc_cmd_msg(session, cc_channel, cc_content)) {
