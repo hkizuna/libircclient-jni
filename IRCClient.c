@@ -107,6 +107,7 @@ Java_xwang_cordova_irc_IRCClient_connect(JNIEnv *env, jobject obj, jstring serve
 void
 Java_xwang_cordova_irc_IRCClient_disconnect(JNIEnv *env, jobject obj) {
   if (session) {
+    irc_disconnect(session);
     irc_destroy_session(session);
   }
 }
